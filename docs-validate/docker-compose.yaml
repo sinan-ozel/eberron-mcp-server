@@ -1,0 +1,10 @@
+services:
+  docs-validator:
+    build:
+      context: ..
+      dockerfile: docs-validate/Dockerfile
+    image: eberron-mcp-server-docs-validate:latest
+    working_dir: /workspace
+    volumes:
+      - ..:/workspace
+    command: mkdocs build --strict

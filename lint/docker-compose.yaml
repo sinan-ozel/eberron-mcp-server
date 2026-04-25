@@ -1,0 +1,10 @@
+services:
+  linter:
+    build:
+      context: ..
+      dockerfile: lint/Dockerfile
+    image: eberron-mcp-server-lint:latest
+    working_dir: /workspace
+    volumes:
+      - ..:/workspace
+    command: /workspace/lint.sh
