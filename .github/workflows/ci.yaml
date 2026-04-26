@@ -189,7 +189,7 @@ jobs:
           echo "Last Git Tag: $LAST_TAG"
 
       - name: Install packaging
-        run: pip install packaging>=25.0
+        run: pip install "packaging>=25.0"
 
       - name: Get Current Version
         id: get-current-version

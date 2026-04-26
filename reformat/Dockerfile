@@ -7,7 +7,7 @@ COPY server/ /workspace/server/
 
 RUN pip install --no-cache-dir -e ".[dev]"
 
-COPY reformat/reformat.sh /workspace/reformat.sh
-RUN chmod +x /workspace/reformat.sh
+COPY reformat/reformat.sh /reformat.sh
+RUN chmod +x /reformat.sh
 
-CMD ["/workspace/reformat.sh"]
+CMD ["/reformat.sh"]

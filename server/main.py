@@ -1,5 +1,5 @@
-from fastmcp import FastMCP
 import httpx
+from fastmcp import FastMCP
 from pydantic import BaseModel, Field
 
 mcp = FastMCP("eberron-mcp-server")
@@ -29,7 +29,7 @@ class GetCapitalInput(BaseModel):
         json_schema_extra={
             "type": "string",
             "not": {"type": "null"},
-            "description": "The name of the Eberron nation (case-insensitive). Valid nations: Breland, Cyre, Aundair, Karrnath, Thrane, Darguun, Droaam, Eldeen Reaches, Lhazaar Principalities, Mror Holds, Q'barra, Talenta Plains, Valenar, Zilargo."
+            "description": "The name of the Eberron nation (case-insensitive). Valid nations: Breland, Cyre, Aundair, Karrnath, Thrane, Darguun, Droaam, Eldeen Reaches, Lhazaar Principalities, Mror Holds, Q'barra, Talenta Plains, Valenar, Zilargo.",
         }
     )
 
@@ -55,7 +55,9 @@ def get_capital(input: GetCapitalInput) -> str:
     if nation_lower in CAPITALS:
         return CAPITALS[nation_lower]
     for key in CAPITALS:
-        if key.replace(" ", "-") == nation_lower or key.replace(" ", "") == nation_lower.replace("-", ""):
+        if key.replace(" ", "-") == nation_lower or key.replace(
+            " ", ""
+        ) == nation_lower.replace("-", ""):
             return CAPITALS[key]
     return "Unknown nation"
 
@@ -75,7 +77,7 @@ async def generate_wiki_chunks(query: str):
             html = response.text
             chunk_size = 500
             for i in range(0, len(html), chunk_size):
-                yield html[i:i + chunk_size]
+                yield html[i : i + chunk_size]
         except httpx.HTTPStatusError:
             yield "Error: Unable to fetch from Eberron Wiki. Please try a different query."
 
@@ -87,7 +89,7 @@ class SearchEberronWikiInput(BaseModel):
         json_schema_extra={
             "type": "string",
             "not": {"type": "null"},
-            "description": "The search query for the Eberron Fandom Wiki (e.g., 'House Cannith', 'Treaty of Throne')."
+            "description": "The search query for the Eberron Fandom Wiki (e.g., 'House Cannith', 'Treaty of Throne').",
         }
     )
 

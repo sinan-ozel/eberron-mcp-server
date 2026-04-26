@@ -7,7 +7,7 @@ COPY server/ /workspace/server/
 
 RUN pip install --no-cache-dir -e ".[dev]"
 
-COPY lint/lint.sh /workspace/lint.sh
-RUN chmod +x /workspace/lint.sh
+COPY lint/lint.sh /lint.sh
+RUN chmod +x /lint.sh
 
-CMD ["/workspace/lint.sh"]
+CMD ["/lint.sh"]

@@ -4,7 +4,7 @@
     {
       "label": "test",
       "type": "shell",
-      "command": "docker compose -f ${workspaceFolder}/tests/docker-compose.yaml up --build --remove-orphans --force-recreate --abort-on-container-exit --exit-code-from test",
+      "command": "docker rm -f mcp-server test-runner 2>/dev/null || true && docker compose -f ${workspaceFolder}/tests/docker-compose.yaml up --build --remove-orphans --force-recreate --abort-on-container-exit --exit-code-from test",
       "problemMatcher": [],
       "group": {
         "kind": "test",
