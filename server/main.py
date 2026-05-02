@@ -1,5 +1,6 @@
 import httpx
 from fastmcp import FastMCP
+from mcp.types import ToolAnnotations
 from pydantic import BaseModel, Field
 
 mcp = FastMCP("eberron-mcp-server")
@@ -34,7 +35,7 @@ class GetCapitalInput(BaseModel):
     )
 
 
-@mcp.tool()
+@mcp.tool(annotations=ToolAnnotations(readOnlyHint=True))
 def get_capital(input: GetCapitalInput) -> str:
     """Get the capital city of an Eberron nation.
 
@@ -94,7 +95,7 @@ class SearchEberronWikiInput(BaseModel):
     )
 
 
-@mcp.tool()
+@mcp.tool(annotations=ToolAnnotations(readOnlyHint=True))
 async def search_eberron_wiki(input: SearchEberronWikiInput) -> str:
     """Search the Eberron Fandom Wiki for information.
 
