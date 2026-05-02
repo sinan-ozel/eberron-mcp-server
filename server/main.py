@@ -1,7 +1,17 @@
+import logging
+
 import httpx
 from fastmcp import FastMCP
 from mcp.types import ToolAnnotations
 from pydantic import BaseModel, Field
+
+
+class _SuppressMCPUnionValidation(logging.Filter):
+    def filter(self, record: logging.LogRecord) -> bool:
+        return not record.getMessage().startswith("Failed to validate request:")
+
+
+logging.getLogger().addFilter(_SuppressMCPUnionValidation())
 
 mcp = FastMCP("eberron-mcp-server")
 
