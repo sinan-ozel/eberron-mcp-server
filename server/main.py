@@ -35,7 +35,7 @@ class GetCapitalInput(BaseModel):
     )
 
 
-@mcp.tool(annotations=ToolAnnotations(readOnlyHint=True))
+@mcp.tool(annotations=ToolAnnotations(title="Get Capital", readOnlyHint=True))
 def get_capital(input: GetCapitalInput) -> str:
     """Get the capital city of an Eberron nation.
 
@@ -95,7 +95,7 @@ class SearchEberronWikiInput(BaseModel):
     )
 
 
-@mcp.tool(annotations=ToolAnnotations(readOnlyHint=True))
+@mcp.tool(annotations=ToolAnnotations(title="Search Eberron Wiki", readOnlyHint=True))
 async def search_eberron_wiki(input: SearchEberronWikiInput) -> str:
     """Search the Eberron Fandom Wiki for information.
 
