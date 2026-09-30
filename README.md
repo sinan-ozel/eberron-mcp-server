@@ -10,30 +10,19 @@ An [MCP](https://modelcontextprotocol.io) server that gives AI assistants access
 
 | Tool | Description |
 |---|---|
-| `get_capital` | Returns the capital city of an Eberron nation |
-| `search_eberron_wiki` | Searches the [Eberron Fandom Wiki](https://eberron.fandom.com) for lore |
+| `lookup_eberron_wiki` | Looks up a page on the [Eberron Fandom Wiki](https://eberron.fandom.com): summary, infobox facts, and the sourcebook pages it cites |
 
-### `get_capital`
+### `lookup_eberron_wiki`
 
-Returns the capital of any of the 14 Eberron nations. Input is case-insensitive.
-
-```
-get_capital("Breland")        → "Wroat"
-get_capital("Eldeen Reaches") → "Greenheart"
-get_capital("Q'barra")        → "Newthrone"
-```
-
-Supported nations: Aundair, Breland, Cyre, Darguun, Droaam, Eldeen Reaches, Karrnath, Lhazaar Principalities, Mror Holds, Q'barra, Talenta Plains, Thrane, Valenar, Zilargo.
-
-### `search_eberron_wiki`
-
-Queries the Eberron Fandom Wiki API and returns the article content for a given title.
+Searches the wiki, opens the best-matching page, and returns its opening paragraph, its infobox facts (capital, region, ruler, ...) each with the book and page the wiki cites, and other matching titles. Results are capped to stay small, and every result is labelled as coming from a community wiki.
 
 ```
-search_eberron_wiki("House Cannith")
-search_eberron_wiki("Sharn")
-search_eberron_wiki("The Mourning")
+lookup_eberron_wiki({"input": {"query": "capital of Breland"}})  → Wroat: "the capital city of the nation of Breland" (Five Nations, p. 60,61,62)
+lookup_eberron_wiki({"input": {"query": "Breland"}})             → facts include capital: Wroat; sources include Eberron Campaign Setting, p. 142
+lookup_eberron_wiki({"input": {"query": "House Cannith"}})       → Dragonmarked House, based in Sharn, Fairhaven and Korth
 ```
+
+**0.2.0 is a breaking change:** it replaces `get_capital` and `search_eberron_wiki`. See [docs/tools.md](docs/tools.md).
 
 ---
 
