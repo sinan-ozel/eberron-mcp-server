@@ -1,80 +1,71 @@
 # Tools
 
-## get_capital
+## lookup_eberron_wiki
 
-Returns the capital city of an Eberron nation.
+Looks something up on the [Eberron Wiki](https://eberron.fandom.com) and returns a short, cited answer.
 
-**Input**
+It searches the wiki, opens the best-matching page (an exact title match wins over the top search hit), and returns:
 
-| Field | Type | Description |
-|---|---|---|
-| `nation` | `string` | Nation name, case-insensitive. Null values are rejected. |
+- the page's opening paragraph(s), as plain text;
+- its infobox fields (capital, region, ruler, population, ...), each with the sourcebook pages the wiki cites for it;
+- the sourcebook pages cited for the page as a whole;
+- other matching page titles, to look up next.
 
-**Supported nations**
+Results are capped (summary length, number of facts, value length, number of sources) so a single call can't fill a small model's context window. `truncated` says when something was cut.
 
-| Nation | Capital |
-|---|---|
-| Aundair | Fairhaven |
-| Breland | Wroat |
-| Cyre | Metrol |
-| Darguun | Rhukaan Draal |
-| Droaam | the Great Craag |
-| Eldeen Reaches | Greenheart |
-| Karrnath | Korth |
-| Lhazaar Principalities | Regalport |
-| Mror Holds | Krona Peak |
-| Q'barra | Newthrone |
-| Talenta Plains | Gatherhold |
-| Thrane | Flamekeep |
-| Valenar | Taer Valaestas |
-| Zilargo | Trolanport |
-
-**Output**
-
-The capital city name as a string, or `"Unknown nation"` if the input doesn't match any supported nation.
-
-**Example**
-
-```
-Input:  { "nation": "Breland" }
-Output: "Wroat"
-
-Input:  { "nation": "eldeen-reaches" }
-Output: "Greenheart"
-
-Input:  { "nation": "Mordain" }
-Output: "Unknown nation"
-```
-
-!!! note "Name matching"
-    The tool normalises spacing and hyphens, so `eldeen-reaches`, `eldeen reaches`, and `EldeenReaches` all resolve correctly.
-
----
-
-## search_eberron_wiki
-
-Queries the [Eberron Fandom Wiki](https://eberron.fandom.com) for a given term and returns the article content.
+!!! warning "Community source"
+    The Eberron Wiki is community-written, not an official sourcebook. Every result says so in `source`. The book citations are the ones the wiki gives: cite them, and prefer official sourcebook data when you have it.
 
 **Input**
 
 | Field | Type | Description |
 |---|---|---|
-| `query` | `string` | Article title or search term. Null values are rejected. |
+| `input.query` | `string` | A page title (`"Breland"`, `"House Cannith"`) or a short question (`"capital of Breland"`). Null and empty values are rejected. |
 
 **Output**
 
-Raw HTML content of the matched wiki article, returned as a single string. If the wiki returns an error or the article is not found, the tool returns an error message.
+| Field | Type | Description |
+|---|---|---|
+| `found` | `boolean` | Whether a matching page was found. |
+| `title` | `string` | Title of the page used, or `""`. |
+| `url` | `string` | Link to the page, or `""`. |
+| `source` | `string` | Where the information comes from, and how to cite it. |
+| `summary` | `string` | Opening paragraph(s) of the page. |
+| `facts` | `array` of `{field, value, sources}` | Infobox fields, each with its own citations. |
+| `sources` | `array` of `string` | Citations for the opening and the infobox, e.g. `"Eberron Campaign Setting, p. 142"`. |
+| `other_matches` | `array` of `string` | Other matching page titles. |
+| `truncated` | `boolean` | True if anything was cut to fit. |
+| `message` | `string` | Explanation when nothing was found. |
+
+If the wiki can't be reached, the call fails with a tool error.
 
 **Example**
 
 ```
-Input:  { "query": "House Cannith" }
-Output: "<html>...</html>"  (full article HTML from the Fandom Wiki)
-
-Input:  { "query": "Treaty of Throne" }
-Output: "<html>...</html>"
+Input:  { "input": { "query": "capital of Breland" } }
+Output: {
+  "found": true,
+  "title": "Wroat",
+  "url": "https://eberron.fandom.com/wiki/Wroat",
+  "source": "Eberron Wiki (eberron.fandom.com): a community wiki, ...",
+  "summary": "Wroat is the capital city of the nation of Breland, ...",
+  "facts": [
+    { "field": "type", "value": "City", "sources": [] },
+    { "field": "region", "value": "Breland", "sources": [] },
+    ...
+  ],
+  "sources": ["Five Nations, p. 60,61,62"],
+  "other_matches": ["Breland", "Sharn", "King's Forest", "Boranel ir'Wynarn"],
+  "truncated": false,
+  "message": ""
+}
 ```
 
-!!! tip "Usage guidance"
-    Pass exact article titles when possible (e.g. `"Sharn"`, `"Droaam"`, `"Mourning"`). The Fandom API resolves redirects automatically.
+!!! note "Changed in 0.2.0"
+    Replaces `get_capital` (a hard-coded table, no sources) and `search_eberron_wiki` (whose wiki endpoint now answers 403). Capitals now come from the wiki's infoboxes, with citations: look up the nation and read its `capital` fact.
 
+## Configuration
+
+| Environment variable | Default | Description |
+|---|---|---|
+| `EBERRON_WIKI_BASE_URL` | `https://eberron.fandom.com` | Wiki to query (its `/api.php`). The test suite points this at a local stand-in. |

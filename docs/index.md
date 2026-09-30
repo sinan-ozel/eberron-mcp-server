@@ -1,6 +1,6 @@
 # Eberron MCP Server
 
-An [MCP](https://modelcontextprotocol.io) server that gives AI assistants access to information about the **Eberron** Dungeons & Dragons campaign setting — capitals of its nations and live lookups against the Eberron Fandom Wiki.
+An [MCP](https://modelcontextprotocol.io) server that gives AI assistants access to information about the **Eberron** Dungeons & Dragons campaign setting: short, cited lookups against the community Eberron Fandom Wiki.
 
 [![CI/CD](https://github.com/sinanozel/eberron-mcp-server/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/sinanozel/eberron-mcp-server/actions/workflows/ci.yaml)
 [![Docker Hub](https://img.shields.io/docker/v/sinanozel/eberron-mcp-server?label=Docker%20Hub)](https://hub.docker.com/r/sinanozel/eberron-mcp-server)
@@ -65,8 +65,7 @@ URL: `http://localhost:8000/mcp`
 
 | Tool | Description |
 |---|---|
-| [`get_capital`](tools.md#get_capital) | Returns the capital city of an Eberron nation |
-| [`search_eberron_wiki`](tools.md#search_eberron_wiki) | Searches the Eberron Fandom Wiki for lore |
+| [`lookup_eberron_wiki`](tools.md#lookup_eberron_wiki) | Looks up a page on the Eberron Wiki: summary, infobox facts, and the sourcebook pages it cites |
 
 See the [Tools](tools.md) page for full input/output details.
 
