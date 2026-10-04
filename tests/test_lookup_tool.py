@@ -28,12 +28,15 @@ def facts(result: dict) -> dict:
     return {f["field"]: f["value"] for f in result["facts"]}
 
 
-def test_only_the_lookup_tool_is_exposed():
+def test_exactly_the_lookup_tools_are_exposed():
     async def names():
         async with Client(SERVER_URL) as client:
             return [tool.name for tool in await client.list_tools()]
 
-    assert asyncio.run(names()) == ["lookup_eberron_wiki"]
+    assert sorted(asyncio.run(names())) == [
+        "lookup_eberron_wiki",
+        "lookup_keith_baker_blog",
+    ]
 
 
 def test_capital_question_lands_on_the_capital_city():

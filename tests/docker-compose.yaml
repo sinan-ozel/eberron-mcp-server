@@ -1,6 +1,6 @@
 services:
-  # Recorded responses from the Eberron wiki's API, so tests never depend on
-  # the live site. See wiki_mock/mock_wiki.py.
+  # Recorded responses from the Eberron wiki's API and Keith Baker's blog, so
+  # tests never depend on the live sites. See wiki_mock/mock_wiki.py.
   wiki-mock:
     image: python:3.12-slim
     container_name: wiki-mock
@@ -34,6 +34,7 @@ services:
     environment:
       - PYTHONUNBUFFERED=1
       - EBERRON_WIKI_BASE_URL=http://wiki-mock:8080
+      - KEITH_BAKER_BLOG_BASE_URL=http://wiki-mock:8080
 
   test:
     build:

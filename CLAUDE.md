@@ -141,11 +141,11 @@ This generates:
 
 ## Testing
 
-Tests use `pytest-mcp-tools==0.3.0`. The `--mcp-tools=http://mcp-server:8000` flag points the plugin at the running server. The test container depends on `mcp-server` being healthy before starting, and `mcp-server` depends on `wiki-mock` (`tests/wiki_mock/`), which serves recorded Eberron wiki API responses (`EBERRON_WIKI_BASE_URL` points the server at it), so tests never hit the live wiki. To add a fixture, save the real `api.php` response as `tests/wiki_mock/fixtures/{search,parse}/<query_or_title_lowercase_with_underscores>.json`.
+Tests use `pytest-mcp-tools==0.3.0`. The `--mcp-tools=http://mcp-server:8000` flag points the plugin at the running server. The test container depends on `mcp-server` being healthy before starting, and `mcp-server` depends on `wiki-mock` (`tests/wiki_mock/`), which serves recorded Eberron wiki API responses (`EBERRON_WIKI_BASE_URL` points the server at it), so tests never hit the live wiki. To add a fixture, save the real `api.php` response as `tests/wiki_mock/fixtures/{search,parse}/<query_or_title_lowercase_with_underscores>.json`. The same mock stands in for Keith Baker's WordPress blog (`KEITH_BAKER_BLOG_BASE_URL`): save `/wp-json/wp/v2/posts?search=<q>&orderby=relevance&per_page=5&_fields=id,date,link,title,excerpt` as `fixtures/blog/search/<q_with_underscores>.json` and `/wp-json/wp/v2/posts/<id>?_fields=id,date,link,title,content` as `fixtures/blog/posts/<id>.json`.
 
 Tool examples for pytest-mcp-tools go in the tool's `inputSchema.examples`: register the tool with `FunctionTool.from_function(...)`, set `tool.parameters["examples"]`, then `mcp.add_tool(tool)` (see `server/main.py`).
 
-Add tests in `tests/test_*.py`: `test_wiki_parsing.py` unit-tests the wikitext parsing on the fixtures, `test_lookup_tool.py` calls the running server end to end.
+Add tests in `tests/test_*.py`: `test_wiki_parsing.py` and `test_blog_parsing.py` unit-test the parsing on the fixtures, `test_lookup_tool.py` and `test_blog_tool.py` call the running server end to end.
 
 ## Dependencies
 
