@@ -1,6 +1,6 @@
 # Eberron MCP Server
 
-An [MCP](https://modelcontextprotocol.io) server that gives AI assistants access to information about the **Eberron** Dungeons & Dragons campaign setting: short, cited lookups against the community Eberron Fandom Wiki.
+An [MCP](https://modelcontextprotocol.io) server that gives AI assistants access to information about the **Eberron** Dungeons & Dragons campaign setting: short, cited lookups against the community Eberron Fandom Wiki and Keith Baker's blog.
 
 [![CI/CD](https://github.com/sinanozel/eberron-mcp-server/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/sinanozel/eberron-mcp-server/actions/workflows/ci.yaml)
 [![Docker Hub](https://img.shields.io/docker/v/sinanozel/eberron-mcp-server?label=Docker%20Hub)](https://hub.docker.com/r/sinanozel/eberron-mcp-server)
@@ -66,6 +66,7 @@ URL: `http://localhost:8000/mcp`
 | Tool | Description |
 |---|---|
 | [`lookup_eberron_wiki`](tools.md#lookup_eberron_wiki) | Looks up a page on the Eberron Wiki: summary, infobox facts, and the sourcebook pages it cites |
+| [`lookup_keith_baker_blog`](tools.md#lookup_keith_baker_blog) | Searches Keith Baker's blog and returns the passages of the best post that answer the query |
 
 See the [Tools](tools.md) page for full input/output details.
 

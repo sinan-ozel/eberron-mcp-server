@@ -11,6 +11,7 @@ An [MCP](https://modelcontextprotocol.io) server that gives AI assistants access
 | Tool | Description |
 |---|---|
 | `lookup_eberron_wiki` | Looks up a page on the [Eberron Fandom Wiki](https://eberron.fandom.com): summary, infobox facts, and the sourcebook pages it cites |
+| `lookup_keith_baker_blog` | Searches [Keith Baker's blog](https://keith-baker.com) and returns the passages of the best post that answer the query |
 
 ### `lookup_eberron_wiki`
 
@@ -20,6 +21,15 @@ Searches the wiki, opens the best-matching page, and returns its opening paragra
 lookup_eberron_wiki({"input": {"query": "capital of Breland"}})  → Wroat: "the capital city of the nation of Breland" (Five Nations, p. 60,61,62)
 lookup_eberron_wiki({"input": {"query": "Breland"}})             → facts include capital: Wroat; sources include Eberron Campaign Setting, p. 142
 lookup_eberron_wiki({"input": {"query": "House Cannith"}})       → Dragonmarked House, based in Sharn, Fairhaven and Korth
+```
+
+### `lookup_keith_baker_blog`
+
+Searches the blog of Eberron's creator, opens the most relevant post that isn't locked to Patreon, and returns the few paragraphs that best match the query, each with the reader's question it answers. Other matching posts are listed with their dates, links, and whether they're Patreon-only. Every result says these are Keith's own ideas, not official canon.
+
+```
+lookup_keith_baker_blog({"input": {"query": "warforged blood of vol"}})  → "iFAQ: Warforged, Blood, and the Blood of Vol" (2020), keith-baker.com/ifaq-warforgedbov/
+lookup_keith_baker_blog({"input": {"query": "lightning rail"}})          → Lightning Round answers that mention the lightning rail
 ```
 
 **0.2.0 is a breaking change:** it replaces `get_capital` and `search_eberron_wiki`. See [docs/tools.md](docs/tools.md).

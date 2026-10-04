@@ -5,6 +5,11 @@ suite never depends on the live wiki (or on Cloudflare letting CI runners
 through). Search results live in ``fixtures/search/<query>.json`` and pages in
 ``fixtures/parse/<title>.json``, both lower-cased with spaces as underscores.
 Anything else answers like the real API does for a miss.
+
+It also stands in for Keith Baker's blog (keith-baker.com), a WordPress site:
+``/wp-json/wp/v2/posts?search=...`` serves
+``fixtures/blog/search/<query>.json`` and ``/wp-json/wp/v2/posts/<id>`` serves
+``fixtures/blog/posts/<id>.json``.
 """
 
 import json
@@ -21,6 +26,12 @@ MISSING_TITLE = {
         "code": "missingtitle",
         "info": "The page you specified doesn't exist.",
     }
+}
+BLOG_POSTS = "/wp-json/wp/v2/posts"
+INVALID_POST = {
+    "code": "rest_post_invalid_id",
+    "message": "Invalid post ID.",
+    "data": {"status": 404},
 }
 
 
@@ -40,6 +51,8 @@ class Handler(BaseHTTPRequestHandler):
         url = urlparse(self.path)
         if url.path == "/health":
             return self.reply(200, {"ok": True})
+        if url.path.startswith(BLOG_POSTS):
+            return self.blog(url)
         if url.path != "/api.php":
             return self.reply(404, {"error": "not found"})
         params = {k: v[0] for k, v in parse_qs(url.query).items()}
@@ -51,6 +64,14 @@ class Handler(BaseHTTPRequestHandler):
         else:
             body = {"error": {"code": "badvalue", "info": "Unsupported."}}
         return self.reply(200, body)
+
+    def blog(self, url):
+        post_id = url.path[len(BLOG_POSTS) :].strip("/")
+        if not post_id:
+            search = parse_qs(url.query).get("search", [""])[0]
+            return self.reply(200, load("blog/search", search, []))
+        body = load("blog/posts", post_id, INVALID_POST)
+        return self.reply(404 if body is INVALID_POST else 200, body)
 
     def reply(self, status: int, body: dict):
         payload = json.dumps(body).encode()
