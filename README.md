@@ -1,5 +1,6 @@
 ![CI/CD](https://github.com/sinan-ozel/eberron-mcp-server/actions/workflows/ci.yaml/badge.svg?branch=main)
 ![Docker Hub](https://img.shields.io/docker/v/sinanozel/eberron-mcp-server?label=Docker%20Hub)
+[![Docker Pulls Eberron MCP Server](https://img.shields.io/docker/pulls/sinanozel/eberron-mcp-server?label=docker%20pulls%20eberron-mcp-server)](https://hub.docker.com/r/sinanozel/eberron-mcp-server)
 ![License](https://img.shields.io/github/license/sinan-ozel/eberron-mcp-server.svg)
 
 # Eberron MCP Server
